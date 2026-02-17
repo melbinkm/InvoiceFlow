@@ -1,5 +1,7 @@
 # InvoiceFlow
 
+> ⚠️ **EDUCATIONAL USE ONLY**: This application is designed for security testing and educational purposes. It contains security weaknesses and should NOT be deployed in production environments or used for actual business operations.
+
 A modern invoice management system built with Flask to help businesses streamline their billing and invoicing processes.
 
 ## 🎯 About
@@ -102,6 +104,18 @@ Contributions are welcome! If you'd like to improve InvoiceFlow:
 3. Commit your changes
 4. Push to the branch
 5. Open a Pull Request
+
+## ⚠️ Disclaimer
+
+**This application is intended for educational and security testing purposes only.**
+
+- This software contains intentional security weaknesses for training purposes
+- Do NOT use this application to handle real business data
+- Do NOT deploy this application on public-facing servers or production environments
+- Only use in isolated, controlled environments (local machines, private test networks)
+- The authors assume no liability for misuse or damages resulting from deployment
+
+**Use responsibly and only in authorized testing scenarios.**
 
 ## 📝 License
 
