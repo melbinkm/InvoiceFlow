@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel - InvoiceFlow{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col">
+            <h2><i class="bi bi-shield-lock"></i> Admin Panel</h2>
+            <p class="text-muted">System administration and monitoring</p>
+        </div>
+    </div>
+
+    <!-- Vulnerability #23: Sensitive information in HTML comments -->
+    <!-- Database path: {{ config.DATABASE_PATH if config else '/database/invoice.db' }} -->
+    <!-- All users have plaintext passwords in database -->
+    <!-- API endpoints accessible without authentication -->
+    <!-- Admin SQL console: /admin/sql-console -->
+
+    <!-- System Statistics -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h6>Total Users</h6>
+                    <h2>{{ stats.total_users }}</h2>
+                    <a href="{{ url_for('admin.users') }}" class="text-white text-decoration-none">
+                        <i class="bi bi-arrow-right"></i> Manage Users
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h6>Total Invoices</h6>
+                    <h2>{{ stats.total_invoices }}</h2>
+                    <a href="{{ url_for('admin.invoices') }}" class="text-white text-decoration-none">
+                        <i class="bi bi-arrow-right"></i> View All
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h6>Total Revenue</h6>
+                    <h2>${{ "%.2f"|format(stats.total_revenue) }}</h2>
+                    <p class="mb-0 small">Paid invoices</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h6>Pending Revenue</h6>
+                    <h2>${{ "%.2f"|format(stats.pending_revenue) }}</h2>
+                    <p class="mb-0 small">Outstanding</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="bi bi-grid"></i> Admin Tools</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <a href="{{ url_for('admin.users') }}" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-people"></i> User Management
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <a href="{{ url_for('admin.invoices') }}" class="btn btn-outline-info w-100">
+                                <i class="bi bi-file-earmark-text"></i> All Invoices
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <a href="{{ url_for('admin.logs') }}" class="btn btn-outline-success w-100">
+                                <i class="bi bi-clock-history"></i> Activity Logs
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <a href="{{ url_for('admin.debug_info') }}" class="btn btn-outline-warning w-100">
+                                <i class="bi bi-bug"></i> Debug Information
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <a href="{{ url_for('admin.sql_console') }}" class="btn btn-outline-danger w-100">
+                                <i class="bi bi-terminal"></i> SQL Console
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <a href="{{ url_for('api.api_health') }}" class="btn btn-outline-secondary w-100">
+                                <i class="bi bi-heart-pulse"></i> System Health
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Invoices -->
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="bi bi-clock-history"></i> Recent Activity</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>User</th>
+                                    <th>Client</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for invoice in recent_invoices %}
+                                <tr>
+                                    <td><strong>{{ invoice.invoice_number }}</strong></td>
+                                    <td>{{ invoice.username }}</td>
+                                    <td>{{ invoice.company_name or 'N/A' }}</td>
+                                    <td>{{ invoice.invoice_date }}</td>
+                                    <td>${{ "%.2f"|format(invoice.total) }}</td>
+                                    <td>
+                                        {% if invoice.status == 'paid' %}
+                                            <span class="badge bg-success">Paid</span>
+                                        {% elif invoice.status == 'sent' %}
+                                            <span class="badge bg-warning">Sent</span>
+                                        {% elif invoice.status == 'overdue' %}
+                                            <span class="badge bg-danger">Overdue</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Draft</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

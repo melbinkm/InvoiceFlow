@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Create Invoice - InvoiceFlow{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col">
+            <h2><i class="bi bi-plus-circle"></i> Create New Invoice</h2>
+        </div>
+        <div class="col-auto">
+            <a href="{{ url_for('invoice.list_invoices') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back to List
+            </a>
+        </div>
+    </div>
+
+    <!-- Vulnerability #3: No input validation on form submission -->
+    <!-- Vulnerability #7: No CSRF protection -->
+    <form method="POST" action="{{ url_for('invoice.create_invoice') }}">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="company_id" class="form-label">Client *</label>
+                        <select class="form-select" id="company_id" name="company_id" required>
+                            <option value="">Select a client...</option>
+                            {% for company in companies %}
+                            <option value="{{ company.id }}">{{ company.company_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="invoice_date" class="form-label">Invoice Date *</label>
+                        <input type="date" class="form-control" id="invoice_date" name="invoice_date" required>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="due_date" class="form-label">Due Date</label>
+                        <input type="date" class="form-control" id="due_date" name="due_date">
+                    </div>
+                </div>
+
+                <!-- Line Items -->
+                <h5 class="mt-4 mb-3">Line Items</h5>
+                <div id="items-container">
+                    <div class="row mb-3 item-row">
+                        <div class="col-md-5">
+                            <label class="form-label">Description *</label>
+                            <input type="text" class="form-control" name="description[]" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Quantity *</label>
+                            <!-- Vulnerability #3: No validation - can submit negative numbers -->
+                            <input type="number" class="form-control quantity" name="quantity[]"
+                                   step="0.01" value="1" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Unit Price *</label>
+                            <!-- Vulnerability #3: No validation - can submit negative prices -->
+                            <input type="number" class="form-control unit-price" name="unit_price[]"
+                                   step="0.01" value="0" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Amount</label>
+                            <input type="text" class="form-control amount" readonly>
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-label">&nbsp;</label>
+                            <button type="button" class="btn btn-danger w-100 remove-item">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-primary mb-4" id="add-item">
+                    <i class="bi bi-plus"></i> Add Line Item
+                </button>
+
+                <!-- Totals -->
+                <div class="row">
+                    <div class="col-md-6 offset-md-6">
+                        <div class="mb-3">
+                            <label for="tax_rate" class="form-label">Tax Rate (%)</label>
+                            <input type="number" class="form-control" id="tax_rate" name="tax_rate"
+                                   step="0.01" value="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="discount" class="form-label">Discount ($)</label>
+                            <input type="number" class="form-control" id="discount" name="discount"
+                                   step="0.01" value="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes and Terms -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="notes" class="form-label">Notes</label>
+                        <!-- Vulnerability #6: XSS payload can be stored here -->
+                        <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="terms" class="form-label">Terms & Conditions</label>
+                        <textarea class="form-control" id="terms" name="terms" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="bi bi-check-circle"></i> Create Invoice
+            </button>
+            <a href="{{ url_for('invoice.list_invoices') }}" class="btn btn-outline-secondary btn-lg">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Auto-calculate amounts
+document.addEventListener('DOMContentLoaded', function() {
+    function calculateAmount(row) {
+        const qty = parseFloat(row.querySelector('.quantity').value) || 0;
+        const price = parseFloat(row.querySelector('.unit-price').value) || 0;
+        const amount = qty * price;
+        row.querySelector('.amount').value = amount.toFixed(2);
+    }
+
+    document.getElementById('items-container').addEventListener('input', function(e) {
+        if (e.target.classList.contains('quantity') || e.target.classList.contains('unit-price')) {
+            calculateAmount(e.target.closest('.item-row'));
+        }
+    });
+
+    // Add new line item
+    document.getElementById('add-item').addEventListener('click', function() {
+        const container = document.getElementById('items-container');
+        const newRow = container.querySelector('.item-row').cloneNode(true);
+        newRow.querySelectorAll('input[type="text"], input[type="number"]').forEach(input => {
+            if (!input.classList.contains('amount')) {
+                input.value = input.name.includes('quantity') ? '1' : '0';
+            }
+        });
+        container.appendChild(newRow);
+    });
+
+    // Remove line item
+    document.getElementById('items-container').addEventListener('click', function(e) {
+        if (e.target.closest('.remove-item')) {
+            const rows = document.querySelectorAll('.item-row');
+            if (rows.length > 1) {
+                e.target.closest('.item-row').remove();
+            }
+        }
+    });
+
+    // Set default invoice date to today
+    document.getElementById('invoice_date').valueAsDate = new Date();
+});
+</script>
+{% endblock %}

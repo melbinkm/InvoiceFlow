@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Edit User: {{ user.username }} - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4"><i class="bi bi-pencil"></i> Edit User: {{ user.username }}</h2>
+
+            <!-- Vulnerability #7: No CSRF protection -->
+            <!-- Vulnerability #14: Can manipulate role for privilege escalation -->
+            <form method="POST" action="{{ url_for('admin.edit_user', user_id=user.id) }}">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                   value="{{ user.email }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="full_name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name"
+                                   value="{{ user.full_name }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Role</label>
+                            <!-- Vulnerability #14: Admin can escalate/downgrade privileges -->
+                            <select class="form-select" id="role" name="role" required>
+                                <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>
+                                <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Administrator</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <!-- Vulnerability #8: Plaintext password storage -->
+                            <input type="text" class="form-control" id="password" name="password"
+                                   value="{{ user.password }}">
+                            <div class="form-text">Change password (plaintext)</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="is_active" class="form-label">Status</label>
+                            <select class="form-select" id="is_active" name="is_active">
+                                <option value="1" {% if user.is_active %}selected{% endif %}>Active</option>
+                                <option value="0" {% if not user.is_active %}selected{% endif %}>Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="bi bi-check-circle"></i> Save Changes
+                    </button>
+                    <a href="{{ url_for('admin.view_user', user_id=user.id) }}"
+                       class="btn btn-outline-secondary btn-lg">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

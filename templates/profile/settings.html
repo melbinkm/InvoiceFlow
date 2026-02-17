@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Profile Settings - InvoiceFlow{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4"><i class="bi bi-gear"></i> Profile Settings</h2>
+
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Update Your Information</h5>
+
+                    <!-- Vulnerability #7: CSRF - No CSRF token -->
+                    <!-- Vulnerability #27: Password autocomplete enabled -->
+                    <form method="POST" action="{{ url_for('update_profile') }}">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username"
+                                   value="{{ user.username }}" readonly>
+                            <div class="form-text">Username cannot be changed</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                   value="{{ user.email }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="full_name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name"
+                                   value="{{ user.full_name }}" required>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h5 class="mb-3">Change Password</h5>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">New Password</label>
+                            <!-- Vulnerability #27: Password autocomplete enabled -->
+                            <!-- Vulnerability #8: Plaintext password storage -->
+                            <input type="password" class="form-control" id="password" name="password"
+                                   autocomplete="new-password">
+                            <div class="form-text">Leave blank to keep current password</div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Account Information Card -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Account Information</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><strong>User ID:</strong> {{ user.id }}</li>
+                        <li><strong>Role:</strong>
+                            {% if user.role == 'admin' %}
+                                <span class="badge bg-danger">Administrator</span>
+                            {% else %}
+                                <span class="badge bg-primary">User</span>
+                            {% endif %}
+                        </li>
+                        <li><strong>Account Created:</strong> {{ user.created_at }}</li>
+                        <li><strong>Last Login:</strong> {{ user.last_login or 'Never' }}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Vulnerability #23: Sensitive information in HTML comments -->
+            <!-- User password (plaintext): {{ user.password }} -->
+            <!-- User role can be escalated via session manipulation -->
+        </div>
+    </div>
+</div>
+{% endblock %}

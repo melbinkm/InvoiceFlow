@@ -1,0 +1,267 @@
+/* InvoiceFlow Custom Styles */
+
+:root {
+    --primary-color: #4F46E5;
+    --secondary-color: #10B981;
+    --danger-color: #EF4444;
+    --warning-color: #F59E0B;
+    --info-color: #3B82F6;
+    --light-gray: #F3F4F6;
+    --dark-gray: #374151;
+}
+
+/* General Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #F9FAFB;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Navbar Styles */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    border-bottom: 2px solid #E5E7EB;
+    font-weight: 600;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #4338CA;
+    border-color: #4338CA;
+    transform: translateY(-1px);
+}
+
+.btn-success {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/* Table Styles */
+.table {
+    background: white;
+}
+
+.table thead th {
+    border-bottom: 2px solid #E5E7EB;
+    font-weight: 600;
+    color: var(--dark-gray);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #F9FAFB;
+    cursor: pointer;
+}
+
+/* Badge Styles */
+.badge {
+    padding: 0.4rem 0.8rem;
+    font-weight: 500;
+    border-radius: 6px;
+}
+
+/* Form Styles */
+.form-label {
+    font-weight: 600;
+    color: var(--dark-gray);
+    margin-bottom: 0.5rem;
+}
+
+.form-control, .form-select {
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    padding: 0.625rem 0.875rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Shadow Utilities */
+.shadow {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+}
+
+/* Footer Styles */
+footer {
+    background-color: #F9FAFB;
+    border-top: 1px solid #E5E7EB;
+}
+
+/* Dashboard Statistics Cards */
+.card.bg-primary, .card.bg-success, .card.bg-info, .card.bg-warning {
+    color: white;
+}
+
+.card.bg-primary a, .card.bg-success a, .card.bg-info a {
+    color: white;
+    text-decoration: underline;
+}
+
+.card.bg-warning {
+    color: #1F2937;
+}
+
+/* Invoice Styles */
+.invoice-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #6366F1 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 10px 10px 0 0;
+}
+
+/* Admin Panel Specific */
+.admin-stat-card {
+    border-left: 4px solid var(--primary-color);
+}
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+
+    .btn-group-sm .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Alert Styles */
+.alert {
+    border-radius: 8px;
+    border: none;
+    padding: 1rem 1.25rem;
+}
+
+.alert-info {
+    background-color: #DBEAFE;
+    color: #1E40AF;
+}
+
+.alert-success {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+
+.alert-danger {
+    background-color: #FEE2E2;
+    color: #991B1B;
+}
+
+.alert-warning {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.dropdown-item:hover {
+    background-color: #F3F4F6;
+    color: var(--primary-color);
+}
+
+/* Min Height Utility */
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* Code Blocks */
+code {
+    background-color: #F3F4F6;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #DB2777;
+}
+
+pre {
+    background-color: #1F2937;
+    color: #F9FAFB;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+/* Monospace Font for Console */
+.font-monospace {
+    font-family: 'Courier New', Courier, monospace;
+}
