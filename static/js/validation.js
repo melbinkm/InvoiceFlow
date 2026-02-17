@@ -1,9 +1,8 @@
 /**
  * InvoiceFlow Client-Side Validation
- * Vulnerability #28: Client-side only validation (easily bypassed)
  */
 
-// Password strength validation (client-side only - can be bypassed!)
+// Password strength validation
 document.addEventListener('DOMContentLoaded', function() {
     // Register form validation
     const registerForm = document.querySelector('form[action*="register"]');
@@ -12,8 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const password = document.getElementById('password');
             const confirmPassword = document.getElementById('confirm_password');
 
-            // Vulnerability #28: Client-side only validation
-            // Attacker can bypass by disabling JavaScript or modifying DOM
             if (password && password.value.length < 6) {
                 e.preventDefault();
                 alert('Password must be at least 6 characters long!');
@@ -28,15 +25,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Invoice form validation (client-side only)
+    // Invoice form validation
     const invoiceForms = document.querySelectorAll('form[action*="invoice"]');
     invoiceForms.forEach(form => {
         form.addEventListener('submit', function(e) {
             const quantities = form.querySelectorAll('input[name="quantity[]"]');
             const prices = form.querySelectorAll('input[name="unit_price[]"]');
 
-            // Vulnerability #28: No server-side validation
-            // Can submit negative values, strings, or arbitrary data via API/direct POST
             let hasError = false;
 
             quantities.forEach(qty => {
@@ -59,11 +54,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Email validation (client-side only)
+    // Email validation
     const emailInputs = document.querySelectorAll('input[type="email"]');
     emailInputs.forEach(input => {
         input.addEventListener('blur', function() {
-            // Vulnerability: Weak email validation, easily bypassed
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (this.value && !emailRegex.test(this.value)) {
                 this.setCustomValidity('Please enter a valid email address');
@@ -74,25 +68,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// XSS Demonstration Function (intentionally vulnerable)
-// Vulnerability #6: Shows how XSS can be executed
+// User content display
 function executeUserContent(content) {
-    // DANGEROUS: Never use innerHTML with user content in real applications!
     document.getElementById('user-content').innerHTML = content;
 }
 
-// Simulated CSRF Token (not actually validated on server)
-// Vulnerability #7: CSRF tokens are generated but not validated
+// CSRF Token generation
 function generateCSRFToken() {
-    // This looks secure but the server doesn't actually validate it
     return 'csrf_' + Math.random().toString(36).substring(2);
 }
 
-// Add CSRF token to forms (fake security)
+// Add CSRF token to forms
 document.addEventListener('DOMContentLoaded', function() {
     const forms = document.querySelectorAll('form[method="POST"]');
     forms.forEach(form => {
-        // Vulnerability #7: Token added but not validated server-side
         const csrfInput = document.createElement('input');
         csrfInput.type = 'hidden';
         csrfInput.name = 'csrf_token';
@@ -101,9 +90,3 @@ document.addEventListener('DOMContentLoaded', function() {
         // form.appendChild(csrfInput);
     });
 });
-
-// Console warning for developers (informational)
-console.log('%cInvoiceFlow Security Warning', 'color: red; font-size: 20px; font-weight: bold;');
-console.log('%cThis is a deliberately vulnerable application for pentesting training.', 'color: orange; font-size: 14px;');
-console.log('%cDO NOT use in production!', 'color: red; font-size: 14px; font-weight: bold;');
-console.log('%cKnown vulnerabilities: SQLi, XSS, CSRF, IDOR, Command Injection, and more.', 'color: yellow; font-size: 12px;');

@@ -19,18 +19,14 @@
                     </div>
                     {% endif %}
 
-                    <!-- Vulnerability #1: SQL Injection in login form -->
-                    <!-- Vulnerability #19: No rate limiting -->
                     <form method="POST" action="{{ url_for('auth.login') }}">
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
-                            <!-- Vulnerability #27: Password autocomplete enabled -->
                             <input type="text" class="form-control" id="username" name="username"
                                    required autocomplete="username">
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <!-- Vulnerability #27: Password autocomplete enabled -->
                             <input type="password" class="form-control" id="password" name="password"
                                    required autocomplete="current-password">
                         </div>

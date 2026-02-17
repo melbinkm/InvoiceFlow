@@ -55,7 +55,6 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <!-- Vulnerability #4: Admin can access any invoice via IDOR -->
                                 <a href="{{ url_for('invoice.view_invoice', id=invoice.id) }}"
                                    class="btn btn-sm btn-outline-primary">
                                     <i class="bi bi-eye"></i> View

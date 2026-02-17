@@ -19,8 +19,6 @@
                     </div>
                     {% endif %}
 
-                    <!-- Vulnerability #3: No input validation -->
-                    <!-- Vulnerability #8: Plaintext password storage -->
                     <form method="POST" action="{{ url_for('auth.register') }}">
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
@@ -36,11 +34,9 @@
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <!-- Vulnerability #27: Password autocomplete enabled -->
                             <input type="password" class="form-control" id="password" name="password"
                                    required autocomplete="new-password">
-                            <!-- Vulnerability #28: Client-side only validation -->
-                            <div class="form-text">Minimum 6 characters (client-side check only)</div>
+                            <div class="form-text">Minimum 6 characters</div>
                         </div>
                         <div class="mb-3">
                             <label for="confirm_password" class="form-label">Confirm Password</label>
@@ -72,6 +68,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<!-- Vulnerability #28: Client-side only validation -->
 <script src="{{ url_for('static', filename='js/validation.js') }}"></script>
 {% endblock %}

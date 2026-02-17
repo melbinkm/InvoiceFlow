@@ -15,7 +15,6 @@
         </div>
     </div>
 
-    <!-- Vulnerability #25: Plaintext passwords exposed in table -->
     <div class="card">
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -64,7 +63,6 @@
                                        class="btn btn-outline-secondary">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <!-- Vulnerability #7: No CSRF protection -->
                                     <form method="POST" action="{{ url_for('admin.delete_user', user_id=user.id) }}"
                                           style="display: inline;">
                                         <button type="submit" class="btn btn-outline-danger btn-sm"
@@ -81,10 +79,5 @@
             </div>
         </div>
     </div>
-
-    <!-- Vulnerability #23: Sensitive information in HTML comments -->
-    <!-- All passwords are stored in plaintext in the database -->
-    <!-- Users table has no foreign key constraints -->
-    <!-- Role field can be manipulated to escalate privileges -->
 </div>
 {% endblock %}

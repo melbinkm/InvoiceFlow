@@ -14,7 +14,6 @@
                    class="btn btn-outline-primary">
                     <i class="bi bi-pencil"></i> Edit
                 </a>
-                <!-- Vulnerability #5: Command injection via filename parameter -->
                 <a href="{{ url_for('invoice.generate_pdf', invoice_id=invoice.id) }}"
                    class="btn btn-outline-success">
                     <i class="bi bi-file-pdf"></i> Download PDF
@@ -88,7 +87,6 @@
                     <tbody>
                         {% for item in items %}
                         <tr>
-                            <!-- Vulnerability #6: Stored XSS in description -->
                             <td>{{ item.description|safe }}</td>
                             <td class="text-end">{{ item.quantity }}</td>
                             <td class="text-end">${{ "%.2f"|format(item.unit_price) }}</td>
@@ -125,8 +123,6 @@
             {% if invoice.notes %}
             <div class="mb-4">
                 <h5>Notes:</h5>
-                <!-- Vulnerability #6: Stored XSS in notes field -->
-                <!-- Vulnerability: autoescaping disabled for XSS -->
                 {% autoescape false %}
                 <div class="p-3 bg-light rounded">{{ invoice.notes }}</div>
                 {% endautoescape %}
@@ -152,8 +148,5 @@
             {% endif %}
         </div>
     </div>
-
-    <!-- Vulnerability #4: IDOR demonstration - try changing invoice_id in URL -->
-    <!-- Example: /invoice/view/1, /invoice/view/2, etc. -->
 </div>
 {% endblock %}

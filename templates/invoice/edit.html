@@ -16,9 +16,6 @@
         </div>
     </div>
 
-    <!-- Vulnerability #4: IDOR - can edit any invoice by changing invoice_id -->
-    <!-- Vulnerability #7: No CSRF protection -->
-    <!-- Vulnerability #28: Client-side only validation -->
     <form method="POST" action="{{ url_for('invoice.edit_invoice', invoice_id=invoice.id) }}">
         <div class="card shadow">
             <div class="card-body">
@@ -138,7 +135,6 @@
 {% endblock %}
 
 {% block extra_js %}
-<!-- Vulnerability #28: Client-side only validation -->
 <script src="{{ url_for('static', filename='js/validation.js') }}"></script>
 <script>
 // Same JS as create.html for calculating amounts

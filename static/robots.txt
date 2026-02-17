@@ -6,11 +6,6 @@ Disallow: /api/
 Disallow: /static/uploads/
 Disallow: /profile/
 
-# Development notes (TODO: remove before production)
-# Last updated: 2024-01-15 by DevOps team
-# Temporary admin access: admin/InvoiceFlow2024!Secure
-# Remove this after initial deployment
-
 # Sitemap
 Sitemap: /sitemap.xml
 

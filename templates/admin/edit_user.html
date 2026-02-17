@@ -8,8 +8,6 @@
         <div class="col-md-8">
             <h2 class="mb-4"><i class="bi bi-pencil"></i> Edit User: {{ user.username }}</h2>
 
-            <!-- Vulnerability #7: No CSRF protection -->
-            <!-- Vulnerability #14: Can manipulate role for privilege escalation -->
             <form method="POST" action="{{ url_for('admin.edit_user', user_id=user.id) }}">
                 <div class="card shadow">
                     <div class="card-body">
@@ -27,7 +25,6 @@
 
                         <div class="mb-3">
                             <label for="role" class="form-label">Role</label>
-                            <!-- Vulnerability #14: Admin can escalate/downgrade privileges -->
                             <select class="form-select" id="role" name="role" required>
                                 <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>
                                 <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Administrator</option>
@@ -36,10 +33,9 @@
 
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <!-- Vulnerability #8: Plaintext password storage -->
                             <input type="text" class="form-control" id="password" name="password"
                                    value="{{ user.password }}">
-                            <div class="form-text">Change password (plaintext)</div>
+                            <div class="form-text">Change password</div>
                         </div>
 
                         <div class="mb-3">

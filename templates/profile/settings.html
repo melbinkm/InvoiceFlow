@@ -12,8 +12,6 @@
                 <div class="card-body">
                     <h5 class="card-title mb-4">Update Your Information</h5>
 
-                    <!-- Vulnerability #7: CSRF - No CSRF token -->
-                    <!-- Vulnerability #27: Password autocomplete enabled -->
                     <form method="POST" action="{{ url_for('update_profile') }}">
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
@@ -39,8 +37,6 @@
                         <h5 class="mb-3">Change Password</h5>
                         <div class="mb-3">
                             <label for="password" class="form-label">New Password</label>
-                            <!-- Vulnerability #27: Password autocomplete enabled -->
-                            <!-- Vulnerability #8: Plaintext password storage -->
                             <input type="password" class="form-control" id="password" name="password"
                                    autocomplete="new-password">
                             <div class="form-text">Leave blank to keep current password</div>
@@ -73,10 +69,6 @@
                     </ul>
                 </div>
             </div>
-
-            <!-- Vulnerability #23: Sensitive information in HTML comments -->
-            <!-- User password (plaintext): {{ user.password }} -->
-            <!-- User role can be escalated via session manipulation -->
         </div>
     </div>
 </div>

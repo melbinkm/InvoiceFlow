@@ -15,8 +15,6 @@
         </div>
     </div>
 
-    <!-- Vulnerability #3: No input validation on form submission -->
-    <!-- Vulnerability #7: No CSRF protection -->
     <form method="POST" action="{{ url_for('invoice.create_invoice') }}">
         <div class="card shadow">
             <div class="card-body">
@@ -50,13 +48,11 @@
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">Quantity *</label>
-                            <!-- Vulnerability #3: No validation - can submit negative numbers -->
                             <input type="number" class="form-control quantity" name="quantity[]"
                                    step="0.01" value="1" required>
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">Unit Price *</label>
-                            <!-- Vulnerability #3: No validation - can submit negative prices -->
                             <input type="number" class="form-control unit-price" name="unit_price[]"
                                    step="0.01" value="0" required>
                         </div>
@@ -96,7 +92,6 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="notes" class="form-label">Notes</label>
-                        <!-- Vulnerability #6: XSS payload can be stored here -->
                         <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
                     </div>
                     <div class="col-md-6 mb-3">

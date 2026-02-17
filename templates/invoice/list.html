@@ -16,7 +16,6 @@
     </div>
 
     <!-- Search Bar -->
-    <!-- Vulnerability #16: Reflected XSS in search -->
     <div class="row mb-4">
         <div class="col-md-6">
             <form method="GET" action="{{ url_for('invoice.list_invoices') }}" class="input-group">
@@ -30,7 +29,6 @@
     </div>
 
     {% if search_term %}
-    <!-- Vulnerability #16: Reflected XSS - search_term not escaped -->
     <div class="alert alert-info">
         Showing results for: <strong>{{ search_term|safe }}</strong>
         <a href="{{ url_for('invoice.list_invoices') }}" class="alert-link">Clear search</a>
@@ -83,7 +81,6 @@
                                        class="btn btn-outline-secondary" title="Edit">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <!-- Vulnerability #7: No CSRF protection on delete -->
                                     <form method="POST" action="{{ url_for('invoice.delete_invoice', invoice_id=invoice.id) }}"
                                           style="display: inline;">
                                         <button type="submit" class="btn btn-outline-danger btn-sm"
